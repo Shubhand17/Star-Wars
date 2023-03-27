@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star-War</title>
+</head>
+<style>
+     #main
+    {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid red;
+        height: 700px;
+        align-items: center;
+        justify-content: center;
+       background-size: cover;
+       
+         background-image: url("https://64.media.tumblr.com/2be384796a45f0db7b0a55a9663b25e1/tumblr_obnmqwG4Sd1vsjcxvo1_540.gifv"); 
+    }
+
+    #query
+    {
+        width: 300px;
+        height: 40px;
+        border-radius: 8px;
+        text-align: center;
+        outline: none;
+
+
+    }
+    #container
+    {
+
+        width: 300px;
+
+        text-align: center;
+        margin-top: 5px;
+        background: linear-gradient(to right ,white, rgb(31, 30, 30));
+        overflow: hidden;
+        border-radius: 8px;
+    }
+    p
+    {
+        font-weight: bold;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    img
+    {
+        width: 300px;
+        height: 100px;
+        position: absolute;
+        top: 200px;
+        right: 40%;
+
+    }
+</style>
+<body>
+    <img src="https://www.disneyplusinformer.com/wp-content/uploads/2020/02/Star-Wars-Logo.png" alt="">;
+
+    <div id="main">
+        <input type="text" id="query" oninput="debouncing(getQuery , 3000)"> 
+        <div id="container"></div>
+    </div>
+  
+</body>
+</html>
+
+<script>
+
+let getQuery = ()=>{
+    let value = document.getElementById("query").value;
+    let url = `https://swapi.dev/api/people/?search=${value}`;
+    getData(url);
+}
+
+let getData = async(url)=>{
+let data =  await fetch(url);
+let res = await data.json();
+append(res.results );
+}
+
+function append (data){
+    let cont = document.getElementById("container");
+    cont.innerHTML = null;
+
+    data.forEach(function(el){
+        let div = document.createElement("div");
+
+
+        let p = document.createElement("p");
+        p.innerText = el.name;
+
+        
+        let birth = document.createElement("p");
+        birth.innerText = el.birth_year;
+
+        div.append( p , birth);
+
+        cont.append(div);
+
+
+    })
+
+};
+
+let id;
+function debouncing(func , delay){
+
+    if(id){
+        clearTimeout(id);
+    }
+
+ id= setTimeout(() => {
+        func();
+    }, delay);
+
+}
+
+
+
+
+
+</script>
